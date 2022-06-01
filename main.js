@@ -8,11 +8,12 @@ cnv.height = 1000;
 let player = new Player();
 let obstacle = new Obstacle();
 let gravity = 0.025;
-let speed = 0.001;
+let speed = 0.005;
+let obstacle2 = new Obstacle2();
 
 
 let pushObstacles = totalObstacle(5);
-
+let pushObstacles2 = totalObstacle2(5);
 
 requestAnimationFrame(animate);
 
@@ -30,6 +31,18 @@ function animate() {
         }
         obstacle.move()
     }
+
+
+    for (let obstacle2 of pushObstacles2) {
+        obstacle2.draw();
+        if (rectCollide(player, obstacle2)) {
+            console.log("hi");
+        }
+        obstacle2.move();
+
+    }
+
+
 
     fill("green")
     rect(0, 900, 1920, 100, "fill");
