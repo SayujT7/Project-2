@@ -1,13 +1,16 @@
 // Setup Canvas 
 let cnv = document.getElementById("canvasEl");
 let ctx = cnv.getContext("2d");
-cnv.width = 1500;
+cnv.width = 1200;
 cnv.height = 1000;
 
 // Global Variable 
 let player = new Player();
 let obstacle = new Obstacle();
-let gravity = 0.5;
+let gravity = 0.05;
+
+let pushObstacles = totalObstacle(22);
+
 
 // Call Animate Function
 requestAnimationFrame(animate);
@@ -18,7 +21,14 @@ function animate() {
 
     player.gravity();
     player.draw();
-    obstacle.draw(obstacle);
+
+
+
+
+    for (i = 0; i < pushObstacles.length; i++) {
+        obstacle.draw(pushObstacles[i]);
+        obstacle.move(pushObstacles[i]);
+    }
 
     fill("green")
     rect(0, 900, 1920, 100, "fill");

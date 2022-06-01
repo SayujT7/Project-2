@@ -1,3 +1,5 @@
+"use strict"
+
 class Player {
     constructor() {
 
@@ -24,7 +26,6 @@ class Player {
         rect(this.position.x, this.position.y, this.width, this.height, "fill");
     }
 
-
     gravity() {
         this.draw();
         this.position.y += this.velocity.y;
@@ -36,41 +37,53 @@ class Player {
 
     // Key Press Movement
     movePlayer(event) {
-        if (event.keyCode == 87) {
-            player.position.y -= 50;
+        if (event.keyCode == 32) {
+            player.position.y -= 200;
+        } else if (player.position.y <= 0) {
+            player.position.y = 800;
         }
     }
 }
 
-let obstacleArray = [];
-
 class Obstacle {
     constructor() {
-       
+
         this.width = 20;
-        this.height = randomInt(20,80);
-       
+        this.height = randomInt(20, 80);
+
         // Location
         this.position = {
-            x: 200,
+            x: randomInt(100, 2000),
             y: 900 - this.height
         }
     }
 
-    arrayPush(total) {
-        for(n = 1; n <= total; n++) {
-            obstacleArray.push(this)
-        }
-        return obstacleArray;
-    }
-
-
-
     // Draw Function
-    draw(object) {
+    draw(obs) {
         fill("navy")
-        rect(object.position.x, object.position.y, object.width, object.height, "fill");
+        rect(obs.position.x, obs.position.y, obs.width, obs.height, "fill");
     }
+
+
+    move(obs) {
+        if (obs.x <= 0) {
+            obs.y = 900 - obs.height;
+            obs.x = randomInt(1200, 2400);
+        }
+
+        obs.position.x--;
+    }
+
 }
 
-console.log(obstacleArray);
+
+// Make Empty Array
+let obstacleArray = [];
+
+// Function to Add Objects to Array
+function totalObstacle(total) {
+    for (let n = 1; n <= total; n++) {
+        obstacleArray.push(new Obstacle());
+    }
+    return obstacleArray;
+}
