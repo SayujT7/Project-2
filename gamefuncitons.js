@@ -1,5 +1,3 @@
-"use strict"
-
 class Player {
     constructor() {
 
@@ -39,11 +37,10 @@ class Player {
     movePlayer(event) {
         if (event.keyCode == 32) {
             player.position.y -= 200;
-        } else if (player.position.y <= 0) {
-            player.position.y = 800;
         }
     }
 }
+
 
 class Obstacle {
     constructor() {
@@ -53,37 +50,56 @@ class Obstacle {
 
         // Location
         this.position = {
-            x: randomInt(100, 2000),
+            x: randomInt(100, 3000),
             y: 900 - this.height
         }
+
+        this.velocity = {
+            x: 0,
+            y: 0
+        }
+
     }
 
     // Draw Function
-    draw(obs) {
+    draw() {
         fill("navy")
-        rect(obs.position.x, obs.position.y, obs.width, obs.height, "fill");
+        rect(this.position.x, this.position.y, this.width, this.height, "fill");
     }
 
 
-    move(obs) {
-        if (obs.x <= 0) {
-            obs.y = 900 - obs.height;
-            obs.x = randomInt(1200, 2400);
+    move() {
+        if (this.position.x <= -100) {
+            this.position.y = 900 - this.height;
+            this.position.x = randomInt(1200, 2400);
         }
 
-        obs.position.x--;
+        this.position.x -= this.velocity.x;
+        this.velocity.x += speed;
     }
 
 }
 
-
-// Make Empty Array
-let obstacleArray = [];
-
 // Function to Add Objects to Array
 function totalObstacle(total) {
+    // Make Empty Array
+    const obstacleArray = [];
+
     for (let n = 1; n <= total; n++) {
         obstacleArray.push(new Obstacle());
     }
     return obstacleArray;
+}
+
+// Test if two rectangle objects intersect
+function rectCollide(rect1, rect2) {
+    let le1 = rect1.position.x;
+    let re1 = rect1.position.x + rect1.width;
+    let te1 = rect1.position.y;
+    let be1 = rect1.position.y + rect1.height;
+    let le2 = rect2.position.x;
+    let re2 = rect2.position.x + rect2.width;
+    let te2 = rect2.position.y;
+    let be2 = rect2.position.y + rect2.height;
+    return le1 < re2 && re1 > le2 && be1 > te2 && te1 < be2;
 }

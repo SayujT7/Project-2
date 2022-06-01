@@ -7,12 +7,13 @@ cnv.height = 1000;
 // Global Variable 
 let player = new Player();
 let obstacle = new Obstacle();
-let gravity = 0.05;
+let gravity = 0.025;
+let speed = 0.001;
 
-let pushObstacles = totalObstacle(22);
+
+let pushObstacles = totalObstacle(5);
 
 
-// Call Animate Function
 requestAnimationFrame(animate);
 
 function animate() {
@@ -22,12 +23,12 @@ function animate() {
     player.gravity();
     player.draw();
 
-
-
-
-    for (i = 0; i < pushObstacles.length; i++) {
-        obstacle.draw(pushObstacles[i]);
-        obstacle.move(pushObstacles[i]);
+    for (let obstacle of pushObstacles) {
+        obstacle.draw()
+        if (rectCollide(player, obstacle)) {
+            console.log("hi");
+        }
+        obstacle.move()
     }
 
     fill("green")
