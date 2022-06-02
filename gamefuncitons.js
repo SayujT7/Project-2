@@ -4,7 +4,7 @@ class Player {
         // Location
         this.position = {
             x: 10,
-            y: 800
+            y: 500
         }
 
         // Velocites
@@ -28,17 +28,15 @@ class Player {
         this.draw();
         this.position.y += this.velocity.y;
 
-
-
-
-        if (this.velocity.y > 3) {
-            this.velocity.y = 3;
+        // If statements
+        // Max Gravity
+        if (this.velocity.y > 2) {
+            this.velocity.y = 2;
+            // apply gravity
         } else if (this.position.y + this.height + this.velocity.y < 900) {
             this.velocity.y += gravity;
+            // Stop at green rect
         } else this.velocity.y = 0;
-
-
-        console.log(this.velocity.y);
 
     }
 
@@ -89,8 +87,8 @@ class Obstacle {
         this.velocity.x += speed;
 
         // Constrain Speed
-        if (this.velocity.x > 5) {
-            this.velocity.x = 5;
+        if (this.velocity.x > 4.5) {
+            this.velocity.x = 4.5;
         }
 
     }
@@ -134,8 +132,8 @@ class Obstacle2 {
         this.velocity.x += speed;
 
         // Constrain Speed
-        if (this.velocity.x > 5) {
-            this.velocity.x = 5;
+        if (this.velocity.x > 4.5) {
+            this.velocity.x = 4.5;
         }
     }
 
@@ -176,4 +174,78 @@ function rectCollide(rect1, rect2) {
     let te2 = rect2.position.y;
     let be2 = rect2.position.y + rect2.height;
     return le1 < re2 && re1 > le2 && be1 > te2 && te1 < be2;
+}
+
+
+// Functions for each part of game
+function startScreen() {
+    background("lightblue");
+    fill("black");
+    font("44px Times New Roman");
+    text("Click to Start", 500, 500, "fill");
+    font("20px Times New Roman");
+    text("Avoid the Blue Pipes and try not to touch the ground!!", 400, 540, "fill");
+}
+
+function gameScreen() {
+    background("skyblue");
+
+    player.gravity();
+    player.draw();
+
+    for (let obstacle of pushObstacles) {
+        obstacle.draw()
+        if (rectCollide(player, obstacle)) {
+            state = "end";
+        }
+        obstacle.move()
+    }
+
+
+    for (let obstacle2 of pushObstacles2) {
+        obstacle2.draw();
+        if (rectCollide(player, obstacle2)) {
+            state = "end";
+        }
+        obstacle2.move();
+
+    }
+
+    // Collision for Floor And Ground
+    if (player.position.y >= 900 - player.height) {
+        state = "end";
+    } else if (player.position.y <= 0) {
+        state = "end";
+    }
+
+    // Grass
+    fill("green")
+    rect(0, 900, 1920, 100, "fill");
+
+    // Display Score
+    font("15px Comic Sans MS");
+    fill("black");
+    text(score, 20, 20, "fill");
+
+
+}
+
+// EndGame
+function endScreen() {
+    background("lightblue");
+    fill("black");
+    font("44px Times New Roman");
+    text("GAME OVER", 500, 500, "fill");
+    font("20px Times New Roman");
+    text("Click to Play Again", 550, 540, "fill");
+    text("You Scored " + score + " points!", 540, 570, "fill");
+    rate = 0;
+}
+
+// Score Variables
+let score = 0;
+let rate = 1;
+
+function scoreCount() {
+    score += rate;
 }

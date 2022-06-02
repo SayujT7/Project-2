@@ -11,41 +11,29 @@ let gravity = 0.025;
 let speed = 0.005;
 let obstacle2 = new Obstacle2();
 
-
+// Array Variables
 let pushObstacles = totalObstacle(5);
 let pushObstacles2 = totalObstacle2(5);
+
+// Change Screens
+let state = "start";
 
 requestAnimationFrame(animate);
 
 function animate() {
-    // Clear Rect for Animation
-    background("skyblue");
 
-    player.gravity();
-    player.draw();
-
-    for (let obstacle of pushObstacles) {
-        obstacle.draw()
-        if (rectCollide(player, obstacle)) {
-            console.log("hi");
-        }
-        obstacle.move()
+    // States of Game
+    if (state === "start") {
+        startScreen();
+    } else if (state === "game") {
+        gameScreen();
+    } else if (state === "end") {
+        endScreen();
+    } else if (state === "restart") {
+        restartGame();
     }
 
-
-    for (let obstacle2 of pushObstacles2) {
-        obstacle2.draw();
-        if (rectCollide(player, obstacle2)) {
-            console.log("hi");
-        }
-        obstacle2.move();
-
-    }
-
-
-
-    fill("green")
-    rect(0, 900, 1920, 100, "fill");
+    scoreCount();
 
     requestAnimationFrame(animate);
 
@@ -53,3 +41,12 @@ function animate() {
 
 // Event Listener
 addEventListener("keydown", player.movePlayer);
+addEventListener("mousedown", mouseDownHandler);
+
+function mouseDownHandler() {
+    if (state === "start") {
+        state = "game";
+    } else if (state === "end") {
+        state = "start";
+    }
+}
