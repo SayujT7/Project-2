@@ -242,6 +242,10 @@ function endScreen() {
     rate = 0;
 }
 
+function reset() {
+    location.reload();
+}
+
 // Score Variables
 let score = 0;
 let rate = 1;

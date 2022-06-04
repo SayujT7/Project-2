@@ -30,7 +30,7 @@ function animate() {
     } else if (state === "end") {
         endScreen();
     } else if (state === "restart") {
-        restartGame();
+        reset();
     }
 
     scoreCount();
@@ -47,6 +47,6 @@ function mouseDownHandler() {
     if (state === "start") {
         state = "game";
     } else if (state === "end") {
-        state = "start";
+        state = "restart";
     }
 }
